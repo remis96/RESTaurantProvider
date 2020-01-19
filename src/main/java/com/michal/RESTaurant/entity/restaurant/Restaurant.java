@@ -23,6 +23,22 @@ public class Restaurant {
     private Long id;
     @Column(name = "phone")
     private Integer phoneNumber;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "city")
+    private String city;
+    @Column(name = "state")
+    private String state;
+
+    @Column(name = "street")
+    private String street;
+
+
+    @Column(name = "longitude")
+    private Double longitude;
+    @Column(name = "latitude")
+    private Double latitude;
+
     @OneToMany(mappedBy = "restaurant")
     private Set<MenuItem> menuItems;
     @OneToMany(mappedBy = "restaurant")
@@ -31,14 +47,6 @@ public class Restaurant {
     private List<OpeningHours> openingHours;
     @OneToMany(mappedBy = "restaurant")
     private List<ExceptionDate> exceptionDates;
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "longitude")
-    private Double longitude;
-    @Column(name = "latitude")
-    private Double latitude;
-
 
     public Restaurant() {
         this.reviews = new HashSet<>();
@@ -213,5 +221,29 @@ public class Restaurant {
     @Override
     public boolean equals(Object obj) {
         return super.equals(obj);
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }

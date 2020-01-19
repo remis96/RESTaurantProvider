@@ -10,11 +10,13 @@ import com.michal.RESTaurant.repository.ExceptionDateRepository;
 import com.michal.RESTaurant.repository.MenuItemRepository;
 import com.michal.RESTaurant.repository.OpeningHoursRepository;
 import com.michal.RESTaurant.repository.RestaurantRepository;
+import com.michal.RESTaurant.utils.DistanceEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +32,7 @@ public class RestaurantService implements IRestaurantService {
     OpeningHoursRepository openingHoursRepository;
     @Autowired
     ExceptionDateRepository exceptionDateRepository;
-    //private DistanceEvaluator distanceEvaluator;
+    private DistanceEvaluator distanceEvaluator;
 
     //  public RestaurantService() {
     //     distanceEvaluator = new DistanceEvaluator();
@@ -103,10 +105,10 @@ public class RestaurantService implements IRestaurantService {
 
     }
 
-    // @Override
-    // public List<Restaurant> getRestaurantsInDistance(Double sourceLong, Double sourceLat, Double distanceInMeters) throws InterruptedException, IOException {
-    //    return distanceEvaluator.getRestaurantsInDistance(sourceLong, sourceLat, distanceInMeters, getAllRestaurants());
-    // }
+    @Override
+    public List<Restaurant> getRestaurantsInDistance(Double sourceLong, Double sourceLat, Double distanceInMeters) throws InterruptedException, IOException {
+        return distanceEvaluator.getRestaurantsInDistance(sourceLong, sourceLat, distanceInMeters, getAllRestaurants());
+    }
 
     @Override
     public Optional<Restaurant> findrestaurantById(Long id) {

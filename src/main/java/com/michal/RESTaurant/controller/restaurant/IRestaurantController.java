@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -27,6 +28,6 @@ public interface IRestaurantController {
     @RequestMapping(value = "/addExceptionDate", method = RequestMethod.POST)
     CustomResponse addMenuItem(@RequestParam Long restaurantId, @RequestBody ExceptionDate date);
 
-    // @RequestMapping(value = "/getRestaurantsInRadius", method = RequestMethod.GET)
-    // List<Restaurant> getInRadius(@RequestParam Double sourceLong, @RequestParam Double sourceLat, @RequestParam Double distance) throws InterruptedException, IOException;
+    @RequestMapping(value = "/getRestaurantsInRadius", method = RequestMethod.GET)
+    List<Restaurant> getInRadius(@RequestParam Double sourceLong, @RequestParam Double sourceLat, @RequestParam Double distance) throws InterruptedException, IOException;
 }

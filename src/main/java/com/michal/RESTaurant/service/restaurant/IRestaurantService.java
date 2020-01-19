@@ -6,6 +6,7 @@ import com.michal.RESTaurant.entity.menu.MenuItem;
 import com.michal.RESTaurant.entity.opening_hours.ExceptionDate;
 import com.michal.RESTaurant.entity.restaurant.Restaurant;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -46,5 +47,5 @@ public interface IRestaurantService {
 
     void initializeOpeningHoursRestaurant(Restaurant res);
 
-    //List<Restaurant> getRestaurantsInDistance(Double sourceLong, Double sourceLat, Double distanceInMeters) throws InterruptedException, IOException;
+    List<Restaurant> getRestaurantsInDistance(Double sourceLong, Double sourceLat, Double distanceInMeters) throws InterruptedException, IOException;
 }

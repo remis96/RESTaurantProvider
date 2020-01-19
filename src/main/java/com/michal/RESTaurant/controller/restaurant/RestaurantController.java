@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -50,14 +51,12 @@ public class RestaurantController implements IRestaurantController {
 
     }
 
-   /* @Override
+    @Override
     @RequestMapping(value = "/getRestaurantsInRadius", method = RequestMethod.GET)
     public List<Restaurant> getInRadius(@RequestParam Double sourceLong, @RequestParam Double sourceLat, @RequestParam Double distance) throws InterruptedException, IOException {
         return restaurantService.getRestaurantsInDistance(sourceLong, sourceLat, distance);
 
     }
-
-    */
 
 
 }
