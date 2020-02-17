@@ -61,7 +61,7 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "/addEvaluation", method = RequestMethod.POST)
-    public CustomResponse addReviewEvaluation(Long reviewId, Principal principal, ReviewEvaluation reviewEvaluation) {
+    public CustomResponse addReviewEvaluation(@RequestParam Long reviewId, Principal principal, @RequestBody ReviewEvaluation reviewEvaluation) {
         return reviewService.addReviewEvaluation(reviewId, principal, reviewEvaluation);
     }
 
