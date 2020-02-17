@@ -1,5 +1,6 @@
 package com.michal.RESTaurant.entity.restaurant;
 
+import com.michal.RESTaurant.entity.enums.Day;
 import com.michal.RESTaurant.entity.enums.PriceClass;
 import com.michal.RESTaurant.entity.menu.MenuItem;
 import com.michal.RESTaurant.entity.opening_hours.ExceptionDate;
@@ -121,7 +122,7 @@ public class Restaurant {
         }
     }
 
-    public void setOpeningHoursForDay(OpeningHours.DAY day, Integer hour, Integer minute) {
+    public void setOpeningHoursForDay(Day day, Integer hour, Integer minute) {
         for (OpeningHours op : openingHours) {
             if (op.getDayOfWeek() == day) {
                 op.setOpenHour(hour);
@@ -131,7 +132,7 @@ public class Restaurant {
         }
     }
 
-    public void setClosingHoursForDay(OpeningHours.DAY day, Integer hour, Integer minute) {
+    public void setClosingHoursForDay(Day day, Integer hour, Integer minute) {
         for (OpeningHours op : openingHours) {
             if (op.getDayOfWeek() == day) {
                 op.setCloseHour(hour);
@@ -153,6 +154,7 @@ public class Restaurant {
         return phoneNumber;
     }
 
+
     public void setPhoneNumber(Integer phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
@@ -172,19 +174,19 @@ public class Restaurant {
 
     public void initializeWeek() {
         OpeningHours monday = new OpeningHours();
-        monday.setDayOfWeek(OpeningHours.DAY.MONDAY);
+        monday.setDayOfWeek(Day.MONDAY);
         OpeningHours tuesday = new OpeningHours();
-        tuesday.setDayOfWeek(OpeningHours.DAY.TUESDAY);
+        tuesday.setDayOfWeek(Day.TUESDAY);
         OpeningHours wednesday = new OpeningHours();
-        wednesday.setDayOfWeek(OpeningHours.DAY.WEDNESDAY);
+        wednesday.setDayOfWeek(Day.WEDNESDAY);
         OpeningHours thursday = new OpeningHours();
-        thursday.setDayOfWeek(OpeningHours.DAY.THURSDAY);
+        thursday.setDayOfWeek(Day.THURSDAY);
         OpeningHours friday = new OpeningHours();
-        friday.setDayOfWeek(OpeningHours.DAY.FRIDAY);
+        friday.setDayOfWeek(Day.FRIDAY);
         OpeningHours saturday = new OpeningHours();
-        saturday.setDayOfWeek(OpeningHours.DAY.SATURDAY);
+        saturday.setDayOfWeek(Day.SATURDAY);
         OpeningHours sunday = new OpeningHours();
-        sunday.setDayOfWeek(OpeningHours.DAY.SUNDAY);
+        sunday.setDayOfWeek(Day.SUNDAY);
         openingHours.add(monday);
         openingHours.add(tuesday);
         openingHours.add(wednesday);
@@ -195,7 +197,6 @@ public class Restaurant {
         for (OpeningHours op : openingHours) {
             op.setRestaurant(this);
         }
-
     }
 
 

@@ -1,0 +1,7 @@
+graphhopper:
+    url: https://graphhopper.com/api/1/route?
+    foot: vehicle=foot
+    car: vehicle=car
+    apiKey: key=2d2012d7-3f18-40c0-9d92-1cd6fd110afd
+
+

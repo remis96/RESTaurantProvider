@@ -3,8 +3,11 @@ package com.michal.RESTaurant.service.restaurant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.michal.RESTaurant.config.PropertyVariablesConfig;
 import com.michal.RESTaurant.entity.GeoCoordinates;
 import com.michal.RESTaurant.entity.restaurant.Restaurant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,12 +17,12 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class DistanceEvaluatorImpl implements IDistanceEvaluator {
-    //graphhopper api for calculating route distance
-    private String GraphhopperURL = "https://graphhopper.com/api/1/route?";
-
+@Service
+public class DistanceEvaluatorImpl implements DistanceEvaluator {
     //najskor vyfiltrovanie objektov v urcitom radiuse aby som zminimalizoval pocet api callov
+    @Autowired
+    PropertyVariablesConfig propertyVariablesConfig;
+
     @Override
     public Double getDistanceInMetersBetweenPointsRadius(double lattitudeA, double longitudeA, double lattitudeB, double longitudeB) {
         if ((lattitudeA == lattitudeB) && (longitudeA == longitudeB)) {
@@ -35,6 +38,7 @@ public class DistanceEvaluatorImpl implements IDistanceEvaluator {
             System.out.println("Distance by fly path is " + dist);
 
             return dist / 1000;
+            //todo toto dat do pice a urobit to cez sql query
         }
     }
 
@@ -44,7 +48,9 @@ public class DistanceEvaluatorImpl implements IDistanceEvaluator {
         String point = "point=";
         String vehicle = "&vehicle=" + wehicle;
         String apiKey = "&key=";
-        String request = this.GraphhopperURL + point + lattitudeA + "," + longitudeA + "&" + point + lattitudeB + "," + longitudeB + vehicle + apiKey;
+        String request = this.propertyVariablesConfig.getGraphhopper_url() + point +
+                lattitudeA + "," + longitudeA + "&" + point + lattitudeB + "," +
+                longitudeB + vehicle + "&calc_points" + "&" + this.propertyVariablesConfig.getGrapHopperApiKey();
 
         System.out.println(request);
         URL url = new URL(request);
@@ -76,7 +82,6 @@ public class DistanceEvaluatorImpl implements IDistanceEvaluator {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-
         return distance;
     }
 

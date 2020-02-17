@@ -2,6 +2,7 @@ package com.michal.RESTaurant.entity.opening_hours;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.michal.RESTaurant.entity.enums.Day;
 import com.michal.RESTaurant.entity.restaurant.Restaurant;
 
 import javax.persistence.*;
@@ -23,7 +24,7 @@ public class OpeningHours {
     @Column(name = "closing_minute")
     private Integer closeMinute;
     @Column(name = "week_day")
-    private DAY dayOfWeek;
+    private Day dayOfWeek;
     @Column(name = "closed")
     private Boolean closed;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -96,11 +97,11 @@ public class OpeningHours {
         this.closeMinute = closeMinute;
     }
 
-    public DAY getDayOfWeek() {
+    public Day getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(DAY dayOfWeek) {
+    public void setDayOfWeek(Day dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
@@ -115,11 +116,5 @@ public class OpeningHours {
                 ", restaurant=" + restaurant.getName() +
                 '}';
     }
-
-    public enum DAY {
-        MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY
-    }
-
-
 }
 

@@ -4,119 +4,48 @@ package com.michal.RESTaurant.service.restaurant;
 import com.michal.RESTaurant.config.CustomResponse;
 import com.michal.RESTaurant.entity.menu.MenuItem;
 import com.michal.RESTaurant.entity.opening_hours.ExceptionDate;
-import com.michal.RESTaurant.entity.opening_hours.OpeningHours;
 import com.michal.RESTaurant.entity.restaurant.Restaurant;
-import com.michal.RESTaurant.repository.ExceptionDateRepository;
-import com.michal.RESTaurant.repository.MenuItemRepository;
-import com.michal.RESTaurant.repository.OpeningHoursRepository;
-import com.michal.RESTaurant.repository.RestaurantRepository;
-import com.michal.RESTaurant.utils.DistanceEvaluator;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-@Service
-public class RestaurantService implements IRestaurantService {
-    @Autowired
-    RestaurantRepository restaurantRepository;
-    @Autowired
-    MenuItemRepository menuItemRepository;
-    @Autowired
-    OpeningHoursRepository openingHoursRepository;
-    @Autowired
-    ExceptionDateRepository exceptionDateRepository;
-    private DistanceEvaluator distanceEvaluator;
-
-    //  public RestaurantService() {
-    //     distanceEvaluator = new DistanceEvaluator();
-    //  }
+public interface RestaurantService {
 
 
-    @Override
-    public Set<MenuItem> getMenuForRestaurant(Long restaurantId) {
+    /**
+     * @param id id of the restaurant
+     * @return optional restaurant
+     */
+    Optional<Restaurant> findrestaurantById(Long id);
 
-        return findrestaurantById(restaurantId).get().getMenuItems();
-    }
+    List<Restaurant> getAllRestaurants();
 
-    @Override
-    public CustomResponse addRestaurant(Restaurant restaurant) {
-        if (restaurantRepository.exists(Example.of(restaurant))) {
-            return new CustomResponse(HttpStatus.CONFLICT, "Dany podnik uz existuje");
-        } else {
-            restaurant.initializeWeek();
-            restaurantRepository.save(restaurant);
-            openingHoursRepository.saveAll(restaurant.getOpeningHours());
+    /**
+     * @param restaurantId id of the restaurant
+     * @return set of menu items for restaurant
+     */
+    Set<MenuItem> getMenuForRestaurant(Long restaurantId);
 
+    /**
+     * @param restaurant
+     * @return custom response with message and http status
+     */
+    CustomResponse addRestaurant(Restaurant restaurant);
 
-            return new CustomResponse(HttpStatus.CREATED, "Podnik uspesne pridany");
-        }
-    }
+    /**
+     * @param restaurantId id of restaurant
+     * @param menuItem     menu item to be added to restaurant if found
+     * @return custom response with message and http status
+     */
+    CustomResponse addMenuItem(Long restaurantId, MenuItem menuItem);
 
-    @Override
-    public CustomResponse addMenuItem(Long restaurantId, MenuItem menuItem) {
-        CustomResponse response = new CustomResponse(HttpStatus.NO_CONTENT, "No such restauratn exists");
-        Optional<Restaurant> res = findrestaurantById(restaurantId);
-        if (res.isPresent()) {
-            res.get().addMenuItem(menuItem);
-            menuItemRepository.save(menuItem);
-            restaurantRepository.save(res.get());
-            response.setStatus(HttpStatus.CREATED);
-            response.setMessage("Menu item added sucessfully");
-        }
-        return response;
-    }
+    void initializeOpeningHours();
 
+    CustomResponse addExceptionDate(Long restaurantId, ExceptionDate date);
 
-    @Override
-    public void initializeOpeningHours() {
-        HashMap<OpeningHours.DAY, OpeningHours> hours = new HashMap<>();
+    void initializeOpeningHoursRestaurant(Restaurant res);
 
-    }
-
-    @Override
-    public CustomResponse addExceptionDate(Long restaurantId, ExceptionDate date) {
-        CustomResponse response = new CustomResponse(HttpStatus.NO_CONTENT, "No such restaurant exists");
-        Optional<Restaurant> restaurant = restaurantRepository.findById(restaurantId);
-        if (restaurant.isPresent()) {
-            restaurant.get().addExceptionDate(date);
-            restaurantRepository.save(restaurant.get());
-            exceptionDateRepository.save(date);
-            response.setMessage("Exception date added sucessfully");
-            response.setStatus(HttpStatus.CREATED);
-
-        }
-        return response;
-
-    }
-
-    @Override
-    public void initializeOpeningHoursRestaurant(Restaurant res) {
-        res.initializeWeek();
-        restaurantRepository.save(res);
-        openingHoursRepository.saveAll(res.getOpeningHours());
-
-
-    }
-
-    @Override
-    public List<Restaurant> getRestaurantsInDistance(Double sourceLong, Double sourceLat, Double distanceInMeters) throws InterruptedException, IOException {
-        return distanceEvaluator.getRestaurantsInDistance(sourceLong, sourceLat, distanceInMeters, getAllRestaurants());
-    }
-
-    @Override
-    public Optional<Restaurant> findrestaurantById(Long id) {
-        return restaurantRepository.findById(id);
-    }
-
-    @Override
-    public List<Restaurant> getAllRestaurants() {
-        return restaurantRepository.findAll();
-    }
+    List<Restaurant> getRestaurantsInDistance(Double sourceLong, Double sourceLat, Double distanceInMeters) throws InterruptedException, IOException;
 }
