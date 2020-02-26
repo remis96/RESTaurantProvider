@@ -47,5 +47,23 @@ public interface RestaurantService {
 
     void initializeOpeningHoursRestaurant(Restaurant res);
 
+    CustomResponse setHidden(Long restaurantId);
+
     List<Restaurant> getRestaurantsInDistance(Double sourceLong, Double sourceLat, Double distanceInMeters) throws InterruptedException, IOException;
+
+    Optional<List<Restaurant>> getRestaurantsByRating(Float raing);
+
+    Optional<List<Restaurant>> getRestaurantsByPriceClass(Float priceClass);
+
+    Optional<List<Restaurant>> getRestaurantsByPriceClassAndRating(Float rating, Float priceClass);
+
+    Optional<List<Restaurant>> getRestaurantsByDistancePriceClassAndRating(Double sourceLong, Double sourceLat, Double distanceInMeters,
+                                                                           Float rating, Float priceClass) throws InterruptedException, IOException;
+
+    Optional<List<Restaurant>> getByDistanceAndRating(Double sourceLong, Double sourceLat, Double distanceInMeters,
+                                                      Float rating) throws InterruptedException, IOException;
+
+    Optional<List<Restaurant>> getByDistanceAndPriceClass(Double sourceLong, Double sourceLat, Double distanceInMeters,
+                                                          Float priceClass) throws InterruptedException, IOException;
+
 }

@@ -60,12 +60,13 @@ public class ReviewServiceImpl implements ReviewService {
         if (user.isPresent() && restaurant.isPresent()) {
             user.get().addReview(review);
             restaurant.get().addReview(review);
+            restaurant.get().calculatePriceClass();
+            restaurant.get().calculateRating();
             reviewRepository.save(review);
             restaurantRepository.save(restaurant.get());
             userRepository.save(user.get());
             response.setStatus(HttpStatus.CREATED);
             response.setMessage("Review added sucessfully");
-
         }
         return response;
     }
@@ -77,7 +78,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Optional<List<Review>> getReviewsForUser(Long userId) {
-
 
         Optional<DAOUser> user = userRepository.findById(userId);
         ArrayList<Review> review = new ArrayList<>();
@@ -133,7 +133,6 @@ public class ReviewServiceImpl implements ReviewService {
         CustomResponse response = new CustomResponse(HttpStatus.NO_CONTENT, "This review does not exist");
         Optional<Review> review = reviewRepository.findById(reviewId);
         Optional<DAOUser> user = userRepository.findByUsername(principal.getName());
-        //todo upravit podmienku a pozriet sa ci existuje taky uzivatel
         if (review.isPresent() && user.isPresent()) {
 
             user.get().addReviewEvaluation(reviewEvaluation);
@@ -145,7 +144,6 @@ public class ReviewServiceImpl implements ReviewService {
             response.setMessage("Review evaluated sucessfully");
         }
         return response;
-
-
     }
+
 }

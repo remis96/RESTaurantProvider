@@ -63,4 +63,5 @@ public interface ReviewService {
     CustomResponse setReviewShow(Long reviewId);
 
     CustomResponse addReviewEvaluation(Long reviewId, Principal principal, ReviewEvaluation reviewEvaluation);
+
 }

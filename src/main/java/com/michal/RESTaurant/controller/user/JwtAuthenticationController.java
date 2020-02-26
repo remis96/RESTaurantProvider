@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 /*
 Expose a POST API /authenticate using the JwtAuthenticationController. The POST API gets username and password in the body- Using Spring Authentication Manager
-we authenticate the username and password.If the credentials are valid, a JWT token is created using the JWTTokenUtil and provided to the client.
+I authenticate the username and password. If the credentials are valid, a JWT token is created using the JWTTokenUtil and provided to the client.
  */
 
 

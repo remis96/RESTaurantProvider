@@ -2,14 +2,10 @@ version: "3"
 services:
   postgres:
     image: postgres:latest
-    network_mode: bridge
-    container_name: postgres
+    networks:
+      - springnet
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    expose:
-      - 5432
-    ports:
-      - 5432:5432
     environment:
       - POSTGRES_PASSWORD=michal123
       - POSTGRES_USER=postgres
@@ -18,16 +14,16 @@ services:
   # APP*****************************************
   springbootapp:
     image: springbootapp:latest
-    network_mode: bridge
-    container_name: springbootapp
-    expose:
-      - 8080
+    networks:
+      - springnet
     ports:
       - 8080:8080
     restart: unless-stopped
     depends_on:
       - postgres
-    links:
-      - postgres
+
 volumes:
   postgres-data:
+
+networks:
+  springnet:

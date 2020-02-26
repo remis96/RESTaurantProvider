@@ -1,6 +1,7 @@
 package com.michal.RESTaurant.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.michal.RESTaurant.entity.enums.TypeOfUser;
 import com.michal.RESTaurant.entity.review.Review;
 import com.michal.RESTaurant.entity.review.ReviewEvaluation;
 
@@ -22,6 +23,7 @@ public class DAOUser {
     private String password;
     @Column
     private String mailAdress;
+    private TypeOfUser typeOfUser;
 
     @OneToMany(mappedBy = "user")
     private Set<Review> reviews;
@@ -88,4 +90,11 @@ public class DAOUser {
         reviews.add(review);
     }
 
+    public TypeOfUser getTypeOfUser() {
+        return typeOfUser;
+    }
+
+    public void setTypeOfUser(TypeOfUser typeOfUser) {
+        this.typeOfUser = typeOfUser;
+    }
 }

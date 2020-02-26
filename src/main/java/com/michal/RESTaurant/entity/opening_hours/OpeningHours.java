@@ -40,6 +40,8 @@ public class OpeningHours {
         this.closed = false;
     }
 
+    // <editor-fold defaultstate="collapsed" desc="getters/setters">
+
     public Boolean getClosed() {
         return closed;
     }
@@ -105,16 +107,6 @@ public class OpeningHours {
         this.dayOfWeek = dayOfWeek;
     }
 
-    @Override
-    public String toString() {
-        return "OpeningHours{" +
-                "openHour=" + openHour +
-                ", openMinute=" + openMinute +
-                ", closeHour=" + closeHour +
-                ", closeMinute=" + closeMinute +
-                ", dayOfWeek=" + dayOfWeek +
-                ", restaurant=" + restaurant.getName() +
-                '}';
-    }
+    // </editor-fold>
 }
 

@@ -1,10 +1,13 @@
 package com.michal.RESTaurant.entity.user;
 
+import com.michal.RESTaurant.entity.enums.TypeOfUser;
+
 public class UserDTO {
     private Long id;
     private String username;
     private String password;
     private String mailAdress;
+    private TypeOfUser typeOfUser;
 
     public Long getId() {
         return id;
@@ -37,5 +40,13 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public TypeOfUser getTypeOfUser() {
+        return typeOfUser;
+    }
+
+    public void setTypeOfUser(TypeOfUser typeOfUser) {
+        this.typeOfUser = typeOfUser;
     }
 }

@@ -14,12 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("users")
-public class UserController implements IUserController {
+public class UserController {
     @Autowired
     JwtUserDetailsService userService;
 
-
-    @Override
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public ResponseEntity<List<DAOUser>> getAllUsers() {
         return new ResponseEntity<List<DAOUser>>(userService.getAllUsers(), HttpStatus.OK);

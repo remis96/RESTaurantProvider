@@ -34,6 +34,8 @@ public class ExceptionDate {
     @JsonIgnore
     private Restaurant restaurant;
 
+    // <editor-fold defaultstate="collapsed" desc="getters/setters">
+
     public Long getId() {
         return id;
     }
@@ -114,4 +116,5 @@ public class ExceptionDate {
     public void setClosingHour(Integer closingHour) {
         this.closingHour = closingHour;
     }
+    // </editor-fold>
 }

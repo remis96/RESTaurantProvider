@@ -1,10 +1,9 @@
-package com.michal.RESTaurant.service.restaurant;
+package com.michal.RESTaurant.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.michal.RESTaurant.config.PropertyVariablesConfig;
-import com.michal.RESTaurant.entity.GeoCoordinates;
 import com.michal.RESTaurant.entity.restaurant.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +18,14 @@ import java.util.List;
 
 @Service
 public class DistanceEvaluatorImpl implements DistanceEvaluator {
-    //najskor vyfiltrovanie objektov v urcitom radiuse aby som zminimalizoval pocet api callov
-    @Autowired
+    //to minimize api calls i get ones in radius and then in real distance via api
+
     PropertyVariablesConfig propertyVariablesConfig;
+
+    @Autowired
+    public DistanceEvaluatorImpl(PropertyVariablesConfig propertyVariablesConfig) {
+        this.propertyVariablesConfig = propertyVariablesConfig;
+    }
 
     @Override
     public Double getDistanceInMetersBetweenPointsRadius(double lattitudeA, double longitudeA, double lattitudeB, double longitudeB) {
@@ -38,7 +42,7 @@ public class DistanceEvaluatorImpl implements DistanceEvaluator {
             System.out.println("Distance by fly path is " + dist);
 
             return dist / 1000;
-            //todo toto dat do pice a urobit to cez sql query
+            //todo THIS IS hackery, this is done for now so I can test, works fine but this can be done by query (getting in radius, there is formula for that)
         }
     }
 
@@ -68,7 +72,7 @@ public class DistanceEvaluatorImpl implements DistanceEvaluator {
         return parseResponse(content.toString());
     }
 
-    //parsujem si return z api callu pre realny distance
+    //returned json has like 5 fields but its convinient this way
     @Override
     public Double parseResponse(String response) {
 
@@ -76,7 +80,8 @@ public class DistanceEvaluatorImpl implements DistanceEvaluator {
         Double distance = 0.0;
         try {
             JsonNode root = mapper.readTree(response);
-            distance = root.findValue("distance").asDouble();
+            //debug
+            distance = root.findValue("distance").asDouble() / 1000;
             System.out.println("Distance from API is " + distance);
 
         } catch (JsonProcessingException e) {
@@ -89,7 +94,8 @@ public class DistanceEvaluatorImpl implements DistanceEvaluator {
     public List<Restaurant> getRestaurantsInDistance(GeoCoordinates sourceLocation, Double distanceInMeters, List<Restaurant> restaurants) throws IOException {
         List<Restaurant> restaurantsInRadius = new ArrayList<Restaurant>();
         List<Restaurant> restaurantsInRealDistance = new ArrayList<Restaurant>();
-        //first I need to filter all restaurants in ceratin radius and from these I will then find ones with certain distance and add then to restaurantsInRadius
+        //first I need to filter all restaurants in certain radius and from these I will then find ones with certain distance and add then to restaurantsInRadius
+        //idea came from friend from sygic
         for (Restaurant restaurant : restaurants) {
 
             if (getDistanceInMetersBetweenPointsRadius(sourceLocation.getLatitude(), sourceLocation.getLongitude(), restaurant.getLatitude(), restaurant.getLongitude()) <= distanceInMeters) {
@@ -98,7 +104,7 @@ public class DistanceEvaluatorImpl implements DistanceEvaluator {
         }
         //then I'll filter them again through google distance matrix api and those that will pass requirements will be added to restaurantsInRealDistance
         for (Restaurant restaurant : restaurantsInRadius) {
-            if (getDistanceInMetersBetweenPointsPath(sourceLocation.getLatitude(), sourceLocation.getLongitude(), restaurant.getLatitude(), restaurant.getLongitude(), "car") <= distanceInMeters) {
+            if (getDistanceInMetersBetweenPointsPath(sourceLocation.getLatitude(), sourceLocation.getLongitude(), restaurant.getLatitude(), restaurant.getLongitude(), "foot") <= distanceInMeters) {
                 restaurantsInRealDistance.add(restaurant);
 
             }

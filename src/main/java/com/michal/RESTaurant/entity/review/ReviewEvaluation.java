@@ -22,7 +22,10 @@ public class ReviewEvaluation {
     @JoinColumn(name = "review_id", referencedColumnName = "id")
     @JsonIgnore
     private Review review;
+
     private String nameOfUser;
+
+    // <editor-fold defaultstate="collapsed" desc="getters/setters">
 
     public Long getId() {
         return id;
@@ -63,4 +66,5 @@ public class ReviewEvaluation {
     public void setNameOfUser(String nameOfUser) {
         this.nameOfUser = nameOfUser;
     }
+    // </editor-fold>
 }

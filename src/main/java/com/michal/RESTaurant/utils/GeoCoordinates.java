@@ -1,8 +1,10 @@
-package com.michal.RESTaurant.entity;
+package com.michal.RESTaurant.utils;
 
 public class GeoCoordinates {
     private Double longitude;
     private Double latitude;
+
+    // <editor-fold defaultstate="collapsed" desc="getters/setters">
 
     public Double getLongitude() {
         return longitude;
@@ -27,4 +29,5 @@ public class GeoCoordinates {
                 ", latitude=" + latitude +
                 '}';
     }
+    // </editor-fold>
 }

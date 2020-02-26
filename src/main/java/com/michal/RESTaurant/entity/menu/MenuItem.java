@@ -24,6 +24,7 @@ public class MenuItem {
     @Column(name = "id")
     private Long id;
 
+    // <editor-fold defaultstate="collapsed" desc="getters/setters">
     public Long getId() {
         return id;
     }
@@ -64,5 +65,5 @@ public class MenuItem {
     public void setDescription(String description) {
         this.description = description;
     }
-
+    // </editor-fold>
 }

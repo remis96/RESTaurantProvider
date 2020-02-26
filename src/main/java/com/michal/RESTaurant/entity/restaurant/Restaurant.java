@@ -1,7 +1,6 @@
 package com.michal.RESTaurant.entity.restaurant;
 
 import com.michal.RESTaurant.entity.enums.Day;
-import com.michal.RESTaurant.entity.enums.PriceClass;
 import com.michal.RESTaurant.entity.menu.MenuItem;
 import com.michal.RESTaurant.entity.opening_hours.ExceptionDate;
 import com.michal.RESTaurant.entity.opening_hours.OpeningHours;
@@ -17,42 +16,65 @@ import java.util.Set;
 @Table(name = "restaurant")
 public class Restaurant {
     @Column(name = "price_class")
-    PriceClass priceClass;
+    private Float priceClass;
+
+    @Column(name = "rating")
+    private Float rating;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "phone")
     private Integer phoneNumber;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "city")
     private String city;
+
     @Column(name = "state")
     private String state;
 
     @Column(name = "street")
     private String street;
 
-
     @Column(name = "longitude")
     private Double longitude;
+
     @Column(name = "latitude")
     private Double latitude;
 
+    @Column(name = "hidden")
+    private Boolean hidden;
+
     @OneToMany(mappedBy = "restaurant")
     private Set<MenuItem> menuItems;
+
     @OneToMany(mappedBy = "restaurant")
     private Set<Review> reviews;
+
     @OneToMany(mappedBy = "restaurant")
     private List<OpeningHours> openingHours;
+
     @OneToMany(mappedBy = "restaurant")
     private List<ExceptionDate> exceptionDates;
 
+    // <editor-fold defaultstate="collapsed" desc="getters/setters">
     public Restaurant() {
         this.reviews = new HashSet<>();
         this.openingHours = new ArrayList<>();
         this.exceptionDates = new ArrayList<>();
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 
     public Double getLongitude() {
@@ -142,11 +164,27 @@ public class Restaurant {
         }
     }
 
-    public PriceClass getPriceClass() {
+    public void calculatePriceClass() {
+        float calculated = 0;
+        for (Review review : reviews) {
+            calculated += review.getPriceClass();
+        }
+        this.priceClass = calculated / reviews.size();
+    }
+
+    public void calculateRating() {
+        float calculated = 0;
+        for (Review review : reviews) {
+            calculated += review.getRating();
+        }
+        this.rating = calculated / reviews.size();
+    }
+
+    public Float getPriceClass() {
         return priceClass;
     }
 
-    public void setPriceClass(PriceClass priceClass) {
+    public void setPriceClass(Float priceClass) {
         this.priceClass = priceClass;
     }
 
@@ -247,4 +285,13 @@ public class Restaurant {
     public void setStreet(String street) {
         this.street = street;
     }
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
+    }
+    // </editor-fold>
 }

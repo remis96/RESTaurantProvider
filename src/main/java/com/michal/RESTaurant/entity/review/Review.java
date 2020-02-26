@@ -1,12 +1,13 @@
 package com.michal.RESTaurant.entity.review;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.michal.RESTaurant.entity.enums.PriceClass;
 import com.michal.RESTaurant.entity.restaurant.Restaurant;
 import com.michal.RESTaurant.entity.user.DAOUser;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.Date;
 import java.util.Set;
 
@@ -17,28 +18,41 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @Column(name = "text")
     private String text;
+
     @Column(name = "price_class")
-    private PriceClass priceClass;
+    @Min(1)
+    @Max(5)
+    private Integer priceClass;
+
     @Column(name = "rating")
     private Float rating;
+
     @Column(name = "date")
     @DateTimeFormat(pattern = "dd-mm-yyyy")
     private Date dateOfPosting;
+
     @Column(name = "hidden")
     private boolean hidden;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_user_id", referencedColumnName = "id")
     @JsonIgnore
     private DAOUser user;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", referencedColumnName = "id")
     @JsonIgnore
     private Restaurant restaurant;
+
     private String nameOfUser;
+
     @OneToMany(mappedBy = "review")
     private Set<ReviewEvaluation> reviewEvaluations;
+
+    // <editor-fold defaultstate="collapsed" desc="getters/setters">
 
     public Review() {
         this.dateOfPosting = new Date();
@@ -62,11 +76,11 @@ public class Review {
         this.reviewEvaluations = reviewEvaluations;
     }
 
-    public PriceClass getPriceClass() {
+    public Integer getPriceClass() {
         return priceClass;
     }
 
-    public void setPriceClass(PriceClass priceClass) {
+    public void setPriceClass(Integer priceClass) {
         this.priceClass = priceClass;
     }
 
@@ -130,4 +144,5 @@ public class Review {
     public void setId(Long id) {
         this.id = id;
     }
+    // </editor-fold>
 }

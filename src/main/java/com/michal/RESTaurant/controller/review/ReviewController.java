@@ -27,7 +27,6 @@ public class ReviewController {
     public CustomResponse addReview(Principal principal, @RequestParam Long restaurantId, @RequestBody Review review) {
 
         return reviewService.addReview(principal.getName(), restaurantId, review);
-
     }
 
     @RequestMapping(value = "/get", method = RequestMethod.GET)
@@ -45,7 +44,7 @@ public class ReviewController {
         return reviewService.setReviewHidden(id);
     }
 
-    @RequestMapping(value = "/setShow", method = RequestMethod.PUT)
+    @RequestMapping(value = "/hide", method = RequestMethod.PUT)
     public CustomResponse setReviewShow(@RequestParam Long id) {
         return reviewService.setReviewShow(id);
     }
@@ -60,12 +59,11 @@ public class ReviewController {
         return new ResponseEntity<List<Review>>(reviewService.getReviewsForRestaurant(id).get(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/addEvaluation", method = RequestMethod.POST)
+    @RequestMapping(value = "/evaluation", method = RequestMethod.POST)
     public CustomResponse addReviewEvaluation(@RequestParam Long reviewId, Principal principal, @RequestBody ReviewEvaluation reviewEvaluation) {
         return reviewService.addReviewEvaluation(reviewId, principal, reviewEvaluation);
     }
 
     //todo patch evaluation + review patch
-
 
 }

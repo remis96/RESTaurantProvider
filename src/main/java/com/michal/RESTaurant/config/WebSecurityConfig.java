@@ -50,7 +50,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable()
-                // dont authenticate this particular request
                 .authorizeRequests().antMatchers("/authenticate", "/register", "/v2/api-docs",
                 "/configuration/ui",
                 "/swagger-resources/**",

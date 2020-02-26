@@ -8,6 +8,7 @@ when authenticating the user details provided by the user. Here we are getting t
 
 
 import com.michal.RESTaurant.config.CustomResponse;
+import com.michal.RESTaurant.entity.enums.TypeOfUser;
 import com.michal.RESTaurant.entity.user.DAOUser;
 import com.michal.RESTaurant.entity.user.UserDTO;
 import com.michal.RESTaurant.repository.UserDao;
@@ -52,6 +53,18 @@ public class JwtUserDetailsService implements UserDetailsService {
                 new ArrayList<>());
     }
 
+    public Optional<TypeOfUser> getTypeOfUser(String name) {
+        TypeOfUser type;
+        Optional<DAOUser> user = userDao.findByUsername(name);
+        if (user.isPresent()) {
+            type = user.get().getTypeOfUser();
+            return Optional.of(type);
+        } else {
+            return Optional.empty();
+        }
+
+    }
+
     public CustomResponse save(UserDTO user) {
         CustomResponse response = new CustomResponse(HttpStatus.CONFLICT, "Bad credentials");
         if (!validate(user.getMailAdress())) {
@@ -71,6 +84,7 @@ public class JwtUserDetailsService implements UserDetailsService {
         newUser.setUsername(user.getUsername());
         newUser.setPassword(bcryptEncoder.encode(user.getPassword()));
         newUser.setMailAdress(user.getMailAdress());
+        newUser.setTypeOfUser(user.getTypeOfUser());
         userDao.save(newUser);
         response.setMessage("Sucess, account " + newUser.getUsername() + " " + newUser.getMailAdress() + " created");
         response.setStatus(HttpStatus.OK);
